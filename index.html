@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oscar Hair Parlor | Book an Appointment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-content">
+      <h1 class="brand">Oscar Hair Parlor</h1>
+      <a href="#book" class="btn btn-small">Book Now</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Fresh looks. Friendly service.</p>
+          <h2>Book your next hair appointment in under a minute.</h2>
+          <p class="lead">
+            Professional cuts, styling, and grooming in a relaxing atmosphere.
+            Choose your service, pick a time, and we’ll take care of the rest.
+          </p>
+          <a href="#book" class="btn">Set Appointment</a>
+        </div>
+        <div class="card hours-card">
+          <h3>Business Hours</h3>
+          <ul>
+            <li><strong>Monday – Friday:</strong> 1:00 PM – 9:00 PM</li>
+            <li><strong>Saturday:</strong> Appointment only</li>
+            <li><strong>Sunday:</strong> Appointment only</li>
+          </ul>
+          <p class="tiny-note">Weekend requests are reviewed and confirmed by staff.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="services container">
+      <h3>Popular Services</h3>
+      <div class="service-grid">
+        <article class="card service-card">
+          <h4>Classic Cut</h4>
+          <p>Precision haircut tailored to your style.</p>
+        </article>
+        <article class="card service-card">
+          <h4>Wash + Blowout</h4>
+          <p>Smooth finish for everyday confidence.</p>
+        </article>
+        <article class="card service-card">
+          <h4>Color Refresh</h4>
+          <p>Touch-up or full refresh with expert care.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="appointments-section container">
+      <h3>Upcoming Appointments</h3>
+      <div id="appointmentsList" class="appointments-table"></div>
+    </section>
+
+    <section id="book" class="booking-section">
+      <div class="container booking-grid">
+        <div class="card">
+          <h3>Set an Appointment</h3>
+          <p class="muted">Fill out the form and we’ll reserve your slot.</p>
+
+          <form id="appointmentForm" novalidate>
+            <input type="text" name="_honey" class="hidden-trap" tabindex="-1" autocomplete="off" />
+            <div class="form-row">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" placeholder="Your name" required />
+            </div>
+
+            <div class="form-row form-split">
+              <div>
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" required />
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="you@email.com" required />
+              </div>
+            </div>
+
+            <div class="form-row form-split">
+              <div>
+                <label for="service">Service</label>
+                <select id="service" name="service" required>
+                  <option value="">Select a service</option>
+                  <option>Classic Cut</option>
+                  <option>Wash + Blowout</option>
+                  <option>Color Refresh</option>
+                  <option>Beard Grooming</option>
+                  <option>Kids Cut</option>
+                </select>
+              </div>
+              <div>
+                <label for="stylist">Preferred Stylist</label>
+                <input type="text" id="stylist" name="stylist" placeholder="Optional" />
+              </div>
+            </div>
+
+            <div class="form-row form-split">
+              <div>
+                <label for="date">Appointment Date</label>
+                <input type="date" id="date" name="date" required />
+              </div>
+              <div>
+                <label for="time">Appointment Time</label>
+                <input type="time" id="time" name="time" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label for="notes">Notes</label>
+              <textarea id="notes" name="notes" rows="3" placeholder="Anything we should know?"></textarea>
+            </div>
+
+            <p id="availabilityHint" class="hint" aria-live="polite"></p>
+            <p id="formMessage" class="form-message" aria-live="polite"></p>
+            <p class="tiny-note">Appointment requests are sent directly to our booking email for confirmation.</p>
+
+            <button type="submit" class="btn">Confirm Appointment</button>
+          </form>
+        </div>
+
+        <aside class="card summary-card">
+          <h3>Booking Tips</h3>
+          <ul>
+            <li>Weekday online slots are available from 1:00 PM to 9:00 PM.</li>
+            <li>Saturday and Sunday requests are appointment-only and subject to confirmation.</li>
+            <li>Please provide a working phone number for quick confirmation.</li>
+          </ul>
+          <div id="lastBooking" class="last-booking"></div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© <span id="year"></span> Oscar Hair Parlor • Look sharp, feel sharper.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
