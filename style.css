@@ -44,6 +44,31 @@ body {
   padding: 0.9rem 0;
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.lang-label {
+  color: #d4af37;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+}
+
+.lang-select {
+  width: auto;
+  min-width: 165px;
+  padding: 0.48rem 0.6rem;
+  border: 2px solid #d4af37;
+  border-radius: 6px;
+  background: #000000;
+  color: #d4af37;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 .brand {
   margin: 0;
   font-size: 1.25rem;
@@ -360,6 +385,21 @@ textarea:focus {
 }
 
 @media (max-width: 620px) {
+  .topbar-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.55rem;
+  }
+
+  .topbar-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .lang-select {
+    min-width: 150px;
+  }
+
   .form-split {
     grid-template-columns: 1fr;
   }

@@ -12,8 +12,15 @@
 <body>
   <header class="topbar">
     <div class="container topbar-content">
-      <h1 class="brand">Oscar Hair Parlor</h1>
-      <a href="#book" class="btn btn-small">Book Now</a>
+      <h1 class="brand" data-i18n="brand">Oscar Hair Parlor</h1>
+      <div class="topbar-actions">
+        <label for="languageSelect" class="lang-label" data-i18n="languageLabel">Language</label>
+        <select id="languageSelect" class="lang-select" aria-label="Language selector">
+          <option value="en">English</option>
+          <option value="es-MX">Español (México)</option>
+        </select>
+        <a href="#book" class="btn btn-small" data-i18n="bookNow">Book Now</a>
+      </div>
     </div>
   </header>
 
@@ -21,22 +28,22 @@
     <section class="hero">
       <div class="container hero-grid">
         <div>
-          <p class="eyebrow">Fresh looks. Friendly service.</p>
-          <h2>Book your next hair appointment in under a minute.</h2>
-          <p class="lead">
+          <p class="eyebrow" data-i18n="heroEyebrow">Fresh looks. Friendly service.</p>
+          <h2 data-i18n="heroTitle">Book your next hair appointment in under a minute.</h2>
+          <p class="lead" data-i18n="heroLead">
             Professional cuts, styling, and grooming in a relaxing atmosphere.
             Choose your service, pick a time, and we’ll take care of the rest.
           </p>
-          <a href="#book" class="btn">Set Appointment</a>
+          <a href="#book" class="btn" data-i18n="setAppointment">Set Appointment</a>
         </div>
         <div class="card hours-card">
-          <h3>Business Hours</h3>
+          <h3 data-i18n="businessHours">Business Hours</h3>
           <ul>
-            <li><strong>Monday – Friday:</strong> 1:00 PM – 9:00 PM</li>
-            <li><strong>Saturday:</strong> Appointment only</li>
-            <li><strong>Sunday:</strong> Appointment only</li>
+            <li><strong data-i18n="mondayFriday">Monday – Friday:</strong> <span data-i18n="weekdayHours">1:00 PM – 9:00 PM</span></li>
+            <li><strong data-i18n="saturday">Saturday:</strong> <span data-i18n="appointmentOnly">Appointment only</span></li>
+            <li><strong data-i18n="sunday">Sunday:</strong> <span data-i18n="appointmentOnly">Appointment only</span></li>
           </ul>
-          <p class="tiny-note">Weekend requests are reviewed and confirmed by staff.</p>
+          <p class="tiny-note" data-i18n="weekendNote">Weekend requests are reviewed and confirmed by staff.</p>
         </div>
       </div>
     </section>

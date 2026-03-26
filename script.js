@@ -4,8 +4,49 @@ const timeInput = document.getElementById("time");
 const availabilityHint = document.getElementById("availabilityHint");
 const formMessage = document.getElementById("formMessage");
 const lastBooking = document.getElementById("lastBooking");
+const languageSelect = document.getElementById("languageSelect");
 const BOOKING_EMAIL = "oscar.cepedagrnd@gmail.com";
 const FORM_SUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${BOOKING_EMAIL}`;
+const LANGUAGE_STORAGE_KEY = "hairParlorLanguage";
+
+const translations = {
+  en: {
+    languageLabel: "Language",
+    brand: "Oscar Hair Parlor",
+    bookNow: "Book Now",
+    heroEyebrow: "Fresh looks. Friendly service.",
+    heroTitle: "Book your next hair appointment in under a minute.",
+    heroLead:
+      "Professional cuts, styling, and grooming in a relaxing atmosphere. Choose your service, pick a time, and we’ll take care of the rest.",
+    setAppointment: "Set Appointment",
+    businessHours: "Business Hours",
+    mondayFriday: "Monday – Friday:",
+    weekdayHours: "1:00 PM – 9:00 PM",
+    saturday: "Saturday:",
+    sunday: "Sunday:",
+    appointmentOnly: "Appointment only",
+    weekendNote: "Weekend requests are reviewed and confirmed by staff."
+  },
+  "es-MX": {
+    languageLabel: "Idioma",
+    brand: "Oscar Hair Parlor",
+    bookNow: "Reservar",
+    heroEyebrow: "Estilo fresco. Atención amable.",
+    heroTitle: "Agenda tu próxima cita en menos de un minuto.",
+    heroLead:
+      "Cortes, peinados y arreglo profesional en un ambiente relajado. Elige tu servicio, selecciona tu horario y nosotros nos encargamos del resto.",
+    setAppointment: "Agendar Cita",
+    businessHours: "Horario",
+    mondayFriday: "Lunes – Viernes:",
+    weekdayHours: "1:00 PM – 9:00 PM",
+    saturday: "Sábado:",
+    sunday: "Domingo:",
+    appointmentOnly: "Solo con cita",
+    weekendNote: "Las solicitudes de fin de semana se revisan y confirman por el equipo."
+  }
+};
+
+let activeLanguage = "en";
 
 const WEEKDAY_OPEN_MINUTES = 13 * 60; // 1:00 PM
 const WEEKDAY_CLOSE_MINUTES = 21 * 60; // 9:00 PM
@@ -16,6 +57,34 @@ function setDefaultDateLimit() {
   const mm = String(now.getMonth() + 1).padStart(2, "0");
   const dd = String(now.getDate()).padStart(2, "0");
   dateInput.min = `${yyyy}-${mm}-${dd}`;
+}
+
+function applyTranslations(language) {
+  const dictionary = translations[language] || translations.en;
+  document.documentElement.lang = language;
+
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    const key = element.dataset.i18n;
+    if (dictionary[key]) {
+      element.textContent = dictionary[key];
+    }
+  });
+}
+
+function initializeLanguage() {
+  if (!languageSelect) return;
+
+  const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  activeLanguage = translations[savedLanguage] ? savedLanguage : "en";
+  languageSelect.value = activeLanguage;
+  applyTranslations(activeLanguage);
+
+  languageSelect.addEventListener("change", (event) => {
+    const selectedLanguage = event.target.value;
+    activeLanguage = translations[selectedLanguage] ? selectedLanguage : "en";
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, activeLanguage);
+    applyTranslations(activeLanguage);
+  });
 }
 
 function formatDateReadable(dateStr) {
@@ -280,6 +349,7 @@ dateInput.addEventListener("change", updateAvailabilityHint);
 document.getElementById("year").textContent = new Date().getFullYear();
 
 setDefaultDateLimit();
+initializeLanguage();
 updateAvailabilityHint();
 displayLastBooking();
 displayUpcomingAppointments();
