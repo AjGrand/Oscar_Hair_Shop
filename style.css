@@ -220,9 +220,43 @@ h2 {
   padding: 2rem 0 3rem;
 }
 
+.section-header-inline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
 .appointments-section h3 {
   margin-top: 0;
   color: #ffffff;
+  margin-bottom: 0;
+}
+
+.admin-toggle {
+  white-space: nowrap;
+}
+
+.admin-panel {
+  margin-bottom: 1rem;
+}
+
+.admin-panel h4 {
+  margin-top: 0;
+  margin-bottom: 0.35rem;
+  color: #d4af37;
+}
+
+.admin-form {
+  margin-top: 1rem;
+}
+
+.admin-panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
 }
 
 .appointments-table {
@@ -257,6 +291,28 @@ h2 {
   color: #e8e8e8;
   padding: 0.75rem;
   border-bottom: 1px solid #333333;
+}
+
+.appointment-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.appointment-delete {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #b3261e;
+  border-radius: 6px;
+  background: transparent;
+  color: #ff8b82;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.appointment-delete:hover {
+  background: #b3261e;
+  color: #ffffff;
 }
 
 .appointments-table tbody tr:last-child td {
@@ -471,6 +527,12 @@ textarea:focus {
 
   .lang-select {
     min-width: 150px;
+  }
+
+  .section-header-inline,
+  .admin-panel__header {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .form-split {

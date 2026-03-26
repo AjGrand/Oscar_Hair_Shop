@@ -110,7 +110,40 @@
     </section>
 
     <section class="appointments-section container">
-      <h3 data-i18n="upcomingAppointments">Upcoming Appointments</h3>
+      <div class="section-header-inline">
+        <h3 data-i18n="upcomingAppointments">Upcoming Appointments</h3>
+        <button type="button" id="adminToggle" class="btn btn-small admin-toggle">Admin Sign In</button>
+      </div>
+      <div id="adminPanel" class="card admin-panel" hidden>
+        <div id="adminLoggedOutView">
+          <h4>Administrator Access</h4>
+          <p class="muted">Sign in to manage appointments and remove entries.</p>
+          <form id="adminLoginForm" class="admin-form" novalidate>
+            <div class="form-row form-split">
+              <div>
+                <label for="adminUsername">Username</label>
+                <input type="text" id="adminUsername" name="username" placeholder="Admin username" required />
+              </div>
+              <div>
+                <label for="adminPassword">Password</label>
+                <input type="password" id="adminPassword" name="password" placeholder="Enter password" required />
+              </div>
+            </div>
+            <p id="adminMessage" class="form-message" aria-live="polite"></p>
+            <button type="submit" class="btn btn-small">Sign In</button>
+          </form>
+        </div>
+
+        <div id="adminLoggedInView" hidden>
+          <div class="admin-panel__header">
+            <div>
+              <h4>Administrator Tools</h4>
+              <p class="muted">You can now remove appointments from the list below.</p>
+            </div>
+            <button type="button" id="adminLogout" class="btn btn-small">Sign Out</button>
+          </div>
+        </div>
+      </div>
       <div id="appointmentsList" class="appointments-table"></div>
     </section>
 

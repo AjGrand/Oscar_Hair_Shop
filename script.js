@@ -7,11 +7,21 @@ const lastBooking = document.getElementById("lastBooking");
 const languageSelect = document.getElementById("languageSelect");
 const serviceSelect = document.getElementById("service");
 const languagePrompt = document.getElementById("languagePrompt");
+const adminToggle = document.getElementById("adminToggle");
+const adminPanel = document.getElementById("adminPanel");
+const adminLoginForm = document.getElementById("adminLoginForm");
+const adminMessage = document.getElementById("adminMessage");
+const adminLogout = document.getElementById("adminLogout");
+const adminLoggedOutView = document.getElementById("adminLoggedOutView");
+const adminLoggedInView = document.getElementById("adminLoggedInView");
 const BOOKING_EMAIL = "oscar.cepedagrnd@gmail.com";
 const FORM_SUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${BOOKING_EMAIL}`;
 const LANGUAGE_STORAGE_KEY = "hairParlorLanguage";
 const LANGUAGE_PREFERENCE_KEY = "hairParlorLanguagePreference";
 const LANGUAGE_PROMPT_SEEN_KEY = "hairParlorLanguagePromptSeen";
+const ADMIN_SESSION_KEY = "hairParlorAdminSession";
+const ADMIN_USERNAME = "admin";
+const ADMIN_PASSWORD = "admin";
 
 const translations = {
   en: {
@@ -81,6 +91,13 @@ const translations = {
     tableTime: "Time",
     tablePhone: "Phone",
     tableStylist: "Stylist",
+    tableActions: "Actions",
+    deleteAppointment: "Delete",
+    deleteConfirm: "Are you sure you want to delete this appointment?",
+    adminSignIn: "Admin Sign In",
+    adminOpenPanel: "Admin Panel",
+    adminLoginSuccess: "Administrator signed in successfully.",
+    adminLoginError: "Incorrect admin username or password.",
     noPreference: "No preference",
     noNotes: "No notes",
     missingFields: "Please fill out all required fields before submitting.",
@@ -164,6 +181,13 @@ const translations = {
     tableTime: "Hora",
     tablePhone: "Teléfono",
     tableStylist: "Barbero",
+    tableActions: "Acciones",
+    deleteAppointment: "Eliminar",
+    deleteConfirm: "¿Seguro que quieres eliminar esta cita?",
+    adminSignIn: "Acceso administrador",
+    adminOpenPanel: "Panel admin",
+    adminLoginSuccess: "Administrador autenticado correctamente.",
+    adminLoginError: "Usuario o contraseña de administrador incorrectos.",
     noPreference: "Sin preferencia",
     noNotes: "Sin notas",
     missingFields: "Por favor completa todos los campos obligatorios antes de enviar.",
@@ -183,6 +207,7 @@ const translations = {
 };
 
 let activeLanguage = "en";
+let isAdminAuthenticated = false;
 
 const WEEKDAY_OPEN_MINUTES = 13 * 60; // 1:00 PM
 const WEEKDAY_CLOSE_MINUTES = 21 * 60; // 9:00 PM
@@ -396,14 +421,14 @@ function displayUpcomingAppointments() {
 
   if (!appointmentsList) return;
 
-  // Sort by date and time
   const sortedBookings = bookings
+    .map((booking, index) => ({ ...booking, originalIndex: index }))
     .sort((a, b) => {
       const dateA = new Date(`${a.date}T${a.time}`);
       const dateB = new Date(`${b.date}T${b.time}`);
       return dateA - dateB;
     })
-    .slice(0, 30); // Limit to 30 appointments
+    .slice(0, 30);
 
   if (sortedBookings.length === 0) {
     appointmentsList.innerHTML = `<div class="appointments-empty">${translate("appointmentsEmpty")}</div>`;
@@ -420,6 +445,7 @@ function displayUpcomingAppointments() {
           <th>${translate("tableTime")}</th>
           <th>${translate("tablePhone")}</th>
           <th>${translate("tableStylist")}</th>
+          ${isAdminAuthenticated ? `<th>${translate("tableActions")}</th>` : ""}
         </tr>
       </thead>
       <tbody>
@@ -435,6 +461,7 @@ function displayUpcomingAppointments() {
         <td>${booking.time}</td>
         <td>${booking.phone}</td>
         <td>${stylist}</td>
+        ${isAdminAuthenticated ? `<td><div class="appointment-actions"><button type="button" class="appointment-delete" data-delete-index="${booking.originalIndex}">${translate("deleteAppointment")}</button></div></td>` : ""}
       </tr>
     `;
   });
@@ -450,6 +477,85 @@ function displayUpcomingAppointments() {
 function setFormMessage(message, type) {
   formMessage.className = `form-message ${type}`;
   formMessage.textContent = message;
+}
+
+function setAdminMessage(message, type) {
+  if (!adminMessage) return;
+  adminMessage.className = `form-message ${type}`;
+  adminMessage.textContent = message;
+}
+
+function updateAdminUI() {
+  if (!adminPanel || !adminLoggedOutView || !adminLoggedInView || !adminToggle) return;
+
+  adminLoggedOutView.hidden = isAdminAuthenticated;
+  adminLoggedInView.hidden = !isAdminAuthenticated;
+  adminToggle.textContent = isAdminAuthenticated ? translate("adminOpenPanel") : translate("adminSignIn");
+  displayUpcomingAppointments();
+}
+
+function toggleAdminPanel() {
+  if (!adminPanel) return;
+  adminPanel.hidden = !adminPanel.hidden;
+}
+
+function deleteAppointment(indexToDelete) {
+  const bookings = JSON.parse(localStorage.getItem("hairParlorBookings") || "[]");
+  bookings.splice(indexToDelete, 1);
+  localStorage.setItem("hairParlorBookings", JSON.stringify(bookings));
+  displayUpcomingAppointments();
+  displayLastBooking();
+}
+
+function initializeAdminControls() {
+  if (!adminToggle || !adminPanel || !adminLoginForm || !adminLogout) return;
+
+  isAdminAuthenticated = localStorage.getItem(ADMIN_SESSION_KEY) === "true";
+  updateAdminUI();
+
+  adminToggle.addEventListener("click", () => {
+    toggleAdminPanel();
+    setAdminMessage("", "");
+  });
+
+  adminLoginForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(adminLoginForm);
+    const username = String(formData.get("username") || "").trim();
+    const password = String(formData.get("password") || "").trim();
+
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+      isAdminAuthenticated = true;
+      localStorage.setItem(ADMIN_SESSION_KEY, "true");
+      setAdminMessage(translate("adminLoginSuccess"), "success");
+      adminLoginForm.reset();
+      updateAdminUI();
+      return;
+    }
+
+    setAdminMessage(translate("adminLoginError"), "error");
+  });
+
+  adminLogout.addEventListener("click", () => {
+    isAdminAuthenticated = false;
+    localStorage.removeItem(ADMIN_SESSION_KEY);
+    setAdminMessage("", "");
+    updateAdminUI();
+  });
+
+  document.addEventListener("click", (event) => {
+    const deleteButton = event.target.closest("[data-delete-index]");
+    if (!deleteButton || !isAdminAuthenticated) return;
+
+    const indexToDelete = Number(deleteButton.dataset.deleteIndex);
+    if (Number.isNaN(indexToDelete)) return;
+
+    const confirmed = window.confirm(translate("deleteConfirm"));
+    if (!confirmed) return;
+
+    deleteAppointment(indexToDelete);
+  });
 }
 
 function buildEmailPayload(payload) {
@@ -603,6 +709,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
 setDefaultDateLimit();
 initializeLanguage();
 initializeLanguagePrompt();
+initializeAdminControls();
 updateAvailabilityHint();
 displayLastBooking();
 displayUpcomingAppointments();
