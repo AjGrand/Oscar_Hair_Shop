@@ -10,6 +10,19 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div id="languagePrompt" class="language-modal" role="dialog" aria-modal="true" aria-labelledby="languagePromptTitle" hidden>
+    <div class="language-modal__backdrop"></div>
+    <div class="language-modal__card">
+      <p class="language-modal__eyebrow">Welcome / Bienvenido</p>
+      <h2 id="languagePromptTitle">Choose your language</h2>
+      <p class="language-modal__text">Select the language you’d like to use on the website.</p>
+      <div class="language-modal__actions">
+        <button type="button" class="btn" data-language-choice="en">English</button>
+        <button type="button" class="btn" data-language-choice="es-MX">Español (México)</button>
+      </div>
+    </div>
+  </div>
+
   <header class="topbar">
     <div class="container topbar-content">
       <h1 class="brand" data-i18n="brand">Grizzly Barbershop</h1>

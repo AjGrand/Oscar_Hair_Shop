@@ -23,9 +23,67 @@ body {
   line-height: 1.55;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 .container {
   width: min(1080px, 92%);
   margin: 0 auto;
+}
+
+.language-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+}
+
+.language-modal[hidden] {
+  display: none;
+}
+
+.language-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.language-modal__card {
+  position: relative;
+  width: min(460px, 100%);
+  background: rgba(10, 10, 10, 0.98);
+  border: 2px solid #d4af37;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.language-modal__eyebrow {
+  margin: 0 0 0.35rem;
+  color: #d4af37;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.language-modal__card h2 {
+  margin-bottom: 0.5rem;
+}
+
+.language-modal__text {
+  color: var(--muted);
+  margin: 0 0 1.1rem;
+}
+
+.language-modal__actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .topbar {

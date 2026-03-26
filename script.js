@@ -6,10 +6,12 @@ const formMessage = document.getElementById("formMessage");
 const lastBooking = document.getElementById("lastBooking");
 const languageSelect = document.getElementById("languageSelect");
 const serviceSelect = document.getElementById("service");
+const languagePrompt = document.getElementById("languagePrompt");
 const BOOKING_EMAIL = "oscar.cepedagrnd@gmail.com";
 const FORM_SUBMIT_ENDPOINT = `https://formsubmit.co/ajax/${BOOKING_EMAIL}`;
 const LANGUAGE_STORAGE_KEY = "hairParlorLanguage";
 const LANGUAGE_PREFERENCE_KEY = "hairParlorLanguagePreference";
+const LANGUAGE_PROMPT_SEEN_KEY = "hairParlorLanguagePromptSeen";
 
 const translations = {
   en: {
@@ -291,8 +293,49 @@ function initializeLanguage() {
     activeLanguage = translations[selectedLanguage] ? selectedLanguage : "en";
     localStorage.setItem(LANGUAGE_STORAGE_KEY, activeLanguage);
     localStorage.setItem(LANGUAGE_PREFERENCE_KEY, "manual");
+    localStorage.setItem(LANGUAGE_PROMPT_SEEN_KEY, "true");
     applyTranslations(activeLanguage);
   });
+}
+
+function closeLanguagePrompt() {
+  if (!languagePrompt) return;
+
+  languagePrompt.hidden = true;
+  document.body.classList.remove("modal-open");
+}
+
+function openLanguagePrompt() {
+  if (!languagePrompt) return;
+
+  languagePrompt.hidden = false;
+  document.body.classList.add("modal-open");
+}
+
+function initializeLanguagePrompt() {
+  if (!languagePrompt) return;
+
+  const promptSeen = localStorage.getItem(LANGUAGE_PROMPT_SEEN_KEY) === "true";
+  const preferenceMode = localStorage.getItem(LANGUAGE_PREFERENCE_KEY);
+
+  languagePrompt.querySelectorAll("[data-language-choice]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const selectedLanguage = button.dataset.languageChoice;
+      activeLanguage = translations[selectedLanguage] ? selectedLanguage : "en";
+      localStorage.setItem(LANGUAGE_STORAGE_KEY, activeLanguage);
+      localStorage.setItem(LANGUAGE_PREFERENCE_KEY, "manual");
+      localStorage.setItem(LANGUAGE_PROMPT_SEEN_KEY, "true");
+      languageSelect.value = activeLanguage;
+      applyTranslations(activeLanguage);
+      closeLanguagePrompt();
+    });
+  });
+
+  if (!promptSeen && preferenceMode !== "manual") {
+    openLanguagePrompt();
+  } else {
+    closeLanguagePrompt();
+  }
 }
 
 function formatDateReadable(dateStr) {
@@ -559,6 +602,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 setDefaultDateLimit();
 initializeLanguage();
+initializeLanguagePrompt();
 updateAvailabilityHint();
 displayLastBooking();
 displayUpcomingAppointments();
