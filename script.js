@@ -12,7 +12,7 @@ const LANGUAGE_STORAGE_KEY = "hairParlorLanguage";
 const translations = {
   en: {
     languageLabel: "Language",
-    brand: "Oscar Hair Parlor",
+    brand: "Grizzly Barbershop",
     bookNow: "Book Now",
     heroEyebrow: "Fresh looks. Friendly service.",
     heroTitle: "Book your next hair appointment in under a minute.",
@@ -29,7 +29,7 @@ const translations = {
   },
   "es-MX": {
     languageLabel: "Idioma",
-    brand: "Oscar Hair Parlor",
+    brand: "Grizzly Barbershop",
     bookNow: "Reservar",
     heroEyebrow: "Estilo fresco. Atención amable.",
     heroTitle: "Agenda tu próxima cita en menos de un minuto.",
